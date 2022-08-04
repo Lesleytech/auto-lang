@@ -1,0 +1,27 @@
+{
+  "name": "auto-lang",
+  "version": "1.0.0",
+  "description": "Automatically create language json files for internationalization",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["Internationalization", "node", "i18n"],
+  "author": "Lafen Lesley <lesleytech6@gmail.com> (https://github.com/lesleytech/)",
+  "homepage": "https://github.com/lesleytech/auto-lang#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lesleytech/auto-lang.git"
+  },
+  "license": "ISC",
+  "bin": "./src/index.js",
+  "type": "module",
+  "dependencies": {
+    "chalk": "^5.0.1",
+    "commander": "^9.4.0",
+    "json-to-ts": "^1.7.0",
+    "nanospinner": "^1.1.0",
+    "prettier": "^2.7.1",
+    "translate": "^1.4.1"
+  }
+}
