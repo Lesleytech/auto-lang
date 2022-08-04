@@ -14,7 +14,9 @@
     "url": "https://github.com/lesleytech/auto-lang.git"
   },
   "license": "ISC",
-  "bin": "./src/index.js",
+  "bin": {
+    "auto-lang": "./src/index.js"
+  },
   "type": "module",
   "dependencies": {
     "chalk": "^5.0.1",
