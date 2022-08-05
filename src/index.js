@@ -11,6 +11,10 @@ import JsonToTS from 'json-to-ts';
 import prettier from 'prettier';
 
 import { Logger } from './utils/Logger.mjs';
+import chalk from 'chalk';
+import { validateOptions } from './utils/validation.mjs';
+
+const APP_VERSION = '1.0.5';
 
 const program = new Command();
 const nodeMajVer = parseInt(process.version.substring(1).split('.')[0]);
@@ -23,24 +27,28 @@ if (nodeMajVer < 14) {
 
 program
   .name('auto-lang')
-  .description('Generate translation files for multiple languages')
-  .version('1.0.4')
-  .requiredOption('-f, --from <lang>', 'language to translate from')
-  .requiredOption(
+  .description('Generate translation files for multiple languages (i18n)')
+  .version(APP_VERSION)
+  .option('-f, --from <lang>', 'language to translate from')
+  .option(
     '-t, --to <lang...>',
-    'Languages to translate to (Seperated by space)'
+    'languages to translate to (seperated by space)'
   )
-  .option('-g, --gen-types', 'generate typescript declaration file')
+  .option(
+    '-d, --dir <directory>',
+    'directory containing the language files',
+    'translations'
+  )
+  .option('-g, --gen-type <lang>', 'generate types from language file')
   .parse();
 
-const { from, to, genTypes } = program.opts();
+const { from, to, genType, inputFile, genTypeFile, dir } = validateOptions(
+  program.opts()
+);
 
-const inputFile = path.join(process.cwd(), 'translations', `${from}.json`);
-
-if (!existsSync(inputFile)) {
-  Logger.error(`File 'translations/${from}.json' not found`);
-  exit(1);
-}
+const inputJson = JSON.parse(
+  await fs.readFile(inputFile, { encoding: 'utf-8' })
+);
 
 async function makeTranslatedCopy(obj1, obj2, options) {
   for (let [key, value] of Object.entries(obj1)) {
@@ -48,12 +56,18 @@ async function makeTranslatedCopy(obj1, obj2, options) {
       obj2[key] = {};
       await makeTranslatedCopy(value, obj2[key], options);
     } else {
-      obj2[key] = await translate(value, { from, to: options.to });
+      try {
+        obj2[key] = await translate(value, { from, to: options.to });
+      } catch (err) {
+        console.log('\n');
+        Logger.error(err.message);
+        exit(1);
+      }
     }
   }
 }
 
-const getTranslation = (inputJson, language) =>
+const getTranslation = (language) =>
   new Promise(async (resolve, reject) => {
     const translatedObj = {};
 
@@ -62,58 +76,58 @@ const getTranslation = (inputJson, language) =>
     resolve(JSON.stringify(translatedObj, null, 4));
   });
 
-async function createDeclarationFile(json) {
-  const spinner = createSpinner('Creating typescript declaration file').start();
+async function createDeclarationFile() {
+  const spinner = createSpinner('Creating language type file').start();
 
-  const interfaces = JsonToTS(json, { rootName: 'GlobalTranslation' });
-  const typesDir = path.join(process.cwd(), 'translations', 'types');
+  const interfaces = JsonToTS(inputJson, { rootName: 'GlobalTranslationType' });
+  const typesDir = path.join(process.cwd(), dir, 'types');
 
   if (!existsSync(typesDir)) {
     fs.mkdir(typesDir);
   }
 
-  const declarationFile = path.join(typesDir, 'index.d.ts');
+  const declarationFile = path.join(typesDir, 'index.ts');
 
   const result = `
     /* eslint-disable no-var */
 
-    declare global {
-      ${interfaces[0]}\n\n
-    }
+    type NestedKeyOf<ObjectType extends object> = {
+    [Key in keyof ObjectType & string]: ObjectType[Key] extends object
+      ? // @ts-ignore
+        \`$\{Key}.$\{NestedKeyOf<ObjectType[Key]>}\`
+      : \`$\{Key}\`
+    }[keyof ObjectType & string]
 
-    ${interfaces.slice(1).join('\n\n')}
-
-    export {};
+    export type GlobalTranslation = NestedKeyOf<GlobalTranslationType>;
+    
+    ${interfaces.join('\n\n')}
   `;
 
   const formattedResult = prettier.format(result, { parser: 'typescript' });
 
   fs.writeFile(declarationFile, formattedResult);
-  spinner.success({ text: 'TS declaration file created' });
+  spinner.success({ text: 'Language type file created' });
 }
 
-async function translateFile(inputFile) {
-  const inputJson = JSON.parse(
-    await fs.readFile(inputFile, { encoding: 'utf-8' })
-  );
+async function translateFile() {
   let spinner, langFile, tranlatedJson;
 
   for (let lang of to) {
-    langFile = path.join(process.cwd(), 'translations', `${lang}.json`);
+    langFile = path.join(process.cwd(), dir, `${lang}.json`);
     spinner = createSpinner(`Translating to ${lang}...`).start();
 
-    tranlatedJson = await getTranslation(inputJson, lang);
+    tranlatedJson = await getTranslation(lang);
     // await sleep(1000);
     await fs.writeFile(langFile, tranlatedJson);
 
     spinner.success({ text: `Complete` });
   }
-
-  return inputJson;
 }
 
-const json = await translateFile(inputFile);
+if (from && to) {
+  await translateFile();
+}
 
-if (genTypes) {
-  await createDeclarationFile(json);
+if (genType) {
+  await createDeclarationFile();
 }

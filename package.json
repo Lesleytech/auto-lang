@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["Internationalization", "node", "i18n"],
+  "keywords": ["Internationalization", "node", "i18n", "translate"],
   "author": "Lafen Lesley <lesleytech6@gmail.com> (https://github.com/lesleytech/)",
   "homepage": "https://github.com/lesleytech/auto-lang#readme",
   "repository": {
