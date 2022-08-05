@@ -4,13 +4,13 @@ import path from 'path';
 import { promises as fs } from 'fs';
 import { existsSync } from 'fs';
 import { Command } from 'commander';
-import chalk from 'chalk';
 import { exit } from 'process';
 import { createSpinner } from 'nanospinner';
 import translate from 'translate';
-import { Logger } from './utils/Logger.mjs';
 import JsonToTS from 'json-to-ts';
 import prettier from 'prettier';
+
+import { Logger } from './utils/Logger.mjs';
 
 const program = new Command();
 const nodeMajVer = parseInt(process.version.substring(1).split('.')[0]);
@@ -24,15 +24,16 @@ if (nodeMajVer < 14) {
 program
   .name('auto-lang')
   .description('Generate translation files for multiple languages')
-  .version('1.0.0')
+  .version('1.0.2')
   .requiredOption('-f, --from <lang>', 'language to translate from')
   .requiredOption(
     '-t, --to <lang...>',
     'Languages to translate to (Seperated by space)'
   )
+  .option('-g, --gen-types', 'generate typescript declaration file')
   .parse();
 
-const { from, to } = program.opts();
+const { from, to, genTypes } = program.opts();
 
 const inputFile = path.join(process.cwd(), 'translations', `${from}.json`);
 
@@ -97,7 +98,6 @@ async function translateFile(inputFile) {
   );
   let spinner, langFile, tranlatedJson;
 
-  return inputJson;
   for (let lang of to) {
     langFile = path.join(process.cwd(), 'translations', `${lang}.json`);
     spinner = createSpinner(`Translating to ${lang}...`).start();
@@ -108,7 +108,12 @@ async function translateFile(inputFile) {
 
     spinner.success({ text: `Complete` });
   }
+
+  return inputJson;
 }
 
 const json = await translateFile(inputFile);
-await createDeclarationFile(json);
+
+if (genTypes) {
+  await createDeclarationFile(json);
+}
