@@ -2,10 +2,10 @@
 
 Generate translation files for multiple languages
 ## Installation
-### npm
-```npm i auto-lang```
-### yarn
-```yarn install auto-lang```
+### Using npm
+    ```$ npm install auto-lang```
+### Using yarn
+    ```$ yarn add auto-lang```
 
 ## Usage
 Run `auto-lang [options]`
