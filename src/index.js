@@ -24,7 +24,7 @@ if (nodeMajVer < 14) {
 program
   .name('auto-lang')
   .description('Generate translation files for multiple languages')
-  .version('1.0.3')
+  .version('1.0.4')
   .requiredOption('-f, --from <lang>', 'language to translate from')
   .requiredOption(
     '-t, --to <lang...>',
