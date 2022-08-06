@@ -17,7 +17,7 @@ You could either install the package and add a script to `package.json` or use t
 
 ### 2. Using a script in `package.json`
 
-```json:
+```json
     {
         "scripts": {
             "gen-lang": "auto-lang [options]"
@@ -46,7 +46,7 @@ You can also pass `--dir <directory>` to change the folder that contains your la
 
 There is a file `en.json` in the translations folder
 
-```json:
+```json
 {
   "GENERAL": {
     "OK": "OK",
@@ -72,7 +72,7 @@ Two files have been created; `fr.json` and `es.json` in the `translations` folde
     |   |   +-- fr.json
     |   |   +-- es.json
 
-```json:
+```json
 /* fr.json */
 
 {
@@ -90,7 +90,7 @@ Two files have been created; `fr.json` and `es.json` in the `translations` folde
 }
 ```
 
-```json:
+```json
 /* es.json */
 
 {
@@ -122,7 +122,7 @@ This will generate a `GlobalTranslation` type based on the structure of the `tra
     |   |   +-- fr.json
     |   |   +-- es.json
 
-```ts:
+```ts
 /* translations/types/index.ts */
 
 type NestedKeyOf<ObjectType extends object> = {
@@ -156,7 +156,7 @@ interface GENERAL {
 
 Now you should be able to use `GlobalTranslation` in your code.
 
-```ts:
+```ts
 import { GlobalTranslation } from './translations/types';
 
 const translate = (key: GlobalTranslation) => {
