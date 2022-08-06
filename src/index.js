@@ -14,7 +14,7 @@ import { Logger } from './utils/Logger.mjs';
 import chalk from 'chalk';
 import { validateOptions } from './utils/validation.mjs';
 
-const APP_VERSION = '1.0.5';
+const APP_VERSION = '1.0.6';
 
 const program = new Command();
 const nodeMajVer = parseInt(process.version.substring(1).split('.')[0]);
@@ -22,7 +22,7 @@ const nodeMajVer = parseInt(process.version.substring(1).split('.')[0]);
 if (nodeMajVer < 14) {
   Logger.error(`Node version >= 14.x.x is required`);
 
-  exit(1);
+  process.exit(1);
 }
 
 program
@@ -47,7 +47,7 @@ const { from, to, genType, inputFile, genTypeFile, dir } = validateOptions(
 );
 
 const inputJson = JSON.parse(
-  await fs.readFile(inputFile, { encoding: 'utf-8' })
+  await fs.readFile(from ? inputFile : genTypeFile, { encoding: 'utf-8' })
 );
 
 async function makeTranslatedCopy(obj1, obj2, options) {
@@ -61,7 +61,7 @@ async function makeTranslatedCopy(obj1, obj2, options) {
       } catch (err) {
         console.log('\n');
         Logger.error(err.message);
-        exit(1);
+        process.exit(1);
       }
     }
   }
@@ -89,8 +89,6 @@ async function createDeclarationFile() {
   const declarationFile = path.join(typesDir, 'index.ts');
 
   const result = `
-    /* eslint-disable no-var */
-
     type NestedKeyOf<ObjectType extends object> = {
     [Key in keyof ObjectType & string]: ObjectType[Key] extends object
       ? // @ts-ignore

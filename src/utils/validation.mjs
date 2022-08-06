@@ -8,7 +8,7 @@ export function validateOptions(opts) {
   if (!Object.keys(opts).length) {
     Logger.error(`Invalid arguments. Use ${chalk.gray('--help')} for usage`);
 
-    exit(1);
+    process.exit(1);
   }
 
   const { to, from, dir, genType } = opts;
@@ -17,7 +17,7 @@ export function validateOptions(opts) {
     Logger.error(
       `${chalk.gray('--from')} and ${chalk.gray('--to')} are dependent options`
     );
-    exit(1);
+    process.exit(1);
   }
 
   const inputFile = path.join(process.cwd(), dir, `${from}.json`);
@@ -25,12 +25,12 @@ export function validateOptions(opts) {
 
   if (!existsSync(inputFile) && from) {
     Logger.error(`File "${inputFile}" not found`);
-    exit(1);
+    process.exit(1);
   }
 
   if (!existsSync(genTypeFile) && genType) {
-    Logger.error(`File "${genType}" not found`);
-    exit(1);
+    Logger.error(`File "${genTypeFile}" not found`);
+    process.exit(1);
   }
 
   return { ...opts, inputFile, genTypeFile };
