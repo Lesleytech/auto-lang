@@ -16,16 +16,23 @@ You could either install the package and add a script to `package.json` or use t
     $ npx auto-lang [options]
 
 ### 2. Using a script in `package.json`
-
 ```json
-    {
-        "scripts": {
-            "gen-lang": "auto-lang [options]"
-        }
+{
+    "scripts": {
+        "gen-lang": "auto-lang [options]"
     }
+}
 ```
 
-You can give your script any name you wish. Also, replace `[options]` with any of the options below.
+Now, in the terminal run:
+
+    $ npm run gen-lang
+
+Or, using yarn:
+
+    $ yarn gen-lang
+
+**Note:** You can give your script any name you wish. Also, replace `[options]` with any of the options below.
 
 #### Options
 
@@ -62,6 +69,7 @@ There is a file `en.json` in the translations folder
 }
 ```
 Get translation files for French (fr) and Spanish (es).
+
     $ npx auto-lang --from en --to fr es
 
 Two files have been created; `fr.json` and `es.json` in the `translations` folder.
@@ -76,17 +84,17 @@ Two files have been created; `fr.json` and `es.json` in the `translations` folde
 /* fr.json */
 
 {
-    "GENERAL": {
-        "OK": "D'ACCORD",
-        "CANCEL": "Annuler",
-        "ACCEPT": "Accepter",
-        "DECLINE": "Déclin"
-    },
-    "GREETINGS": {
-        "HELLO": "Bonjour",
-        "HI": "Salut",
-        "GOOD_MORNING": "Bonjour"
-    }
+  "GENERAL": {
+    "OK": "D'ACCORD",
+    "CANCEL": "Annuler",
+    "ACCEPT": "Accepter",
+    "DECLINE": "Déclin"
+  },
+  "GREETINGS": {
+    "HELLO": "Bonjour",
+    "HI": "Salut",
+    "GOOD_MORNING": "Bonjour"
+  }
 }
 ```
 
@@ -94,17 +102,17 @@ Two files have been created; `fr.json` and `es.json` in the `translations` folde
 /* es.json */
 
 {
-    "GENERAL": {
-        "OK": "OK",
-        "CANCEL": "Cancelar",
-        "ACCEPT": "Aceptar",
-        "DECLINE": "Rechazar"
-    },
-    "GREETINGS": {
-        "HELLO": "Hola",
-        "HI": "Hola",
-        "GOOD_MORNING": "Buenos dias"
-    }
+  "GENERAL": {
+    "OK": "OK",
+    "CANCEL": "Cancelar",
+    "ACCEPT": "Aceptar",
+    "DECLINE": "Rechazar"
+  },
+  "GREETINGS": {
+    "HELLO": "Hola",
+    "HI": "Hola",
+    "GOOD_MORNING": "Buenos dias"
+  }
 }
 ```
 

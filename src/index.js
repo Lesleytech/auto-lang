@@ -14,7 +14,7 @@ import { Logger } from './utils/Logger.mjs';
 import chalk from 'chalk';
 import { validateOptions } from './utils/validation.mjs';
 
-const APP_VERSION = '1.0.7';
+const APP_VERSION = '1.0.8';
 
 const program = new Command();
 const nodeMajVer = parseInt(process.version.substring(1).split('.')[0]);

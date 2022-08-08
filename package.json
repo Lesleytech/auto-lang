@@ -1,6 +1,6 @@
 {
   "name": "auto-lang",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Automatically create language json files for internationalization",
   "main": "./src/index.js",
   "scripts": {
