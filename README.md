@@ -40,6 +40,7 @@ Or, using yarn:
     -f, --from <lang>      language to translate from
     -t, --to <lang...>     languages to translate to (seperated by space)
     -d, --dir <directory>  directory containing the language files (default: "translations")
+    -s, --skip-existing    skip existing keys during translation
     -g, --gen-type <lang>  generate types from language file
     -h, --help             display help for command
 

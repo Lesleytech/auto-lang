@@ -1,18 +1,15 @@
 #!/usr/bin/env node
 
 import path from 'path';
-import { promises as fs } from 'fs';
-import { existsSync } from 'fs';
-import { Command } from 'commander';
-import { exit } from 'process';
-import { createSpinner } from 'nanospinner';
+import {existsSync, promises as fs} from 'fs';
+import {Command} from 'commander';
+import {createSpinner} from 'nanospinner';
 import translate from 'translate';
 import JsonToTS from 'json-to-ts';
 import prettier from 'prettier';
 
-import { Logger } from './utils/Logger.mjs';
-import chalk from 'chalk';
-import { validateOptions } from './utils/validation.mjs';
+import {Logger} from './utils/Logger.mjs';
+import {validateOptions} from './utils/validation.mjs';
 
 const APP_VERSION = '1.0.8';
 
@@ -39,10 +36,11 @@ program
     'directory containing the language files',
     'translations'
   )
+  .option('-s, --skip-existing', 'skip existing keys during translation')
   .option('-g, --gen-type <lang>', 'generate types from language file')
   .parse();
 
-const { from, to, genType, inputFile, genTypeFile, dir } = validateOptions(
+const { from, to, genType, inputFile, genTypeFile, dir, skipExisting } = validateOptions(
   program.opts()
 );
 
@@ -57,7 +55,7 @@ async function makeTranslatedCopy(obj1, obj2, options) {
       await makeTranslatedCopy(value, obj2[key], options);
     } else {
       try {
-        obj2[key] = await translate(value, { from, to: options.to });
+        if(!(obj2[key] && skipExisting)) obj2[key] = await translate(value, { from, to: options.to });
       } catch (err) {
         console.log('\n');
         Logger.error(err.message);
@@ -69,7 +67,14 @@ async function makeTranslatedCopy(obj1, obj2, options) {
 
 const getTranslation = (language) =>
   new Promise(async (resolve, reject) => {
-    const translatedObj = {};
+    let translatedObj = {};
+    const outputFile = path.join(process.cwd(), dir, `${language}.json`);
+
+    if(existsSync(outputFile)) {
+      translatedObj = JSON.parse(
+          await fs.readFile(outputFile, { encoding: 'utf-8' })
+      );
+    }
 
     await makeTranslatedCopy(inputJson, translatedObj, { to: language });
 
