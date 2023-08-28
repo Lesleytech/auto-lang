@@ -8,10 +8,12 @@ import translate from 'translate';
 import JsonToTS from 'json-to-ts';
 import prettier from 'prettier';
 
+import pJson from '../package.json' assert { type: "json" };
 import {Logger} from './utils/Logger.mjs';
 import {validateOptions} from './utils/validation.mjs';
 
-const APP_VERSION = '1.0.8';
+const {version: appVersion} = pJson;
+
 
 const program = new Command();
 const nodeMajVer = parseInt(process.version.substring(1).split('.')[0]);
@@ -25,7 +27,7 @@ if (nodeMajVer < 14) {
 program
   .name('auto-lang')
   .description('Generate translation files for multiple languages (i18n)')
-  .version(APP_VERSION)
+  .version(appVersion)
   .option('-f, --from <lang>', 'language to translate from')
   .option(
     '-t, --to <lang...>',
@@ -51,7 +53,7 @@ const inputJson = JSON.parse(
 async function makeTranslatedCopy(obj1, obj2, options) {
   for (let [key, value] of Object.entries(obj1)) {
     if (typeof value === 'object') {
-      obj2[key] = {};
+      obj2[key] = obj2[key] || {};
       await makeTranslatedCopy(value, obj2[key], options);
     } else {
       try {
