@@ -1,12 +1,20 @@
 {
   "name": "auto-lang",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "description": "Automatically create language json files for internationalization",
   "main": "./src/index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsc --w",
+    "build": "rm -rf dist && tsc"
   },
-  "keywords": ["Internationalization", "node", "i18n", "translate"],
+  "keywords": [
+    "Internationalization",
+    "node",
+    "i18n",
+    "translate"
+  ],
   "author": "Lafen Lesley <lesleytech6@gmail.com> (https://github.com/lesleytech/)",
   "homepage": "https://github.com/lesleytech/auto-lang#readme",
   "repository": {
@@ -15,15 +23,23 @@
   },
   "license": "ISC",
   "bin": {
-    "auto-lang": "./src/index.js"
+    "auto-lang": "./dist/index.js"
   },
-  "type": "module",
   "dependencies": {
     "chalk": "^5.0.1",
     "commander": "^9.4.0",
     "json-to-ts": "^1.7.0",
     "nanospinner": "^1.1.0",
-    "prettier": "^2.7.1",
     "translate": "^1.4.1"
+  },
+  "devDependencies": {
+    "@types/chalk": "^2.2.4",
+    "@types/node": "^22.10.1",
+    "@webpack-cli/generators": "^3.0.7",
+    "prettier": "^3.4.2",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.7.2",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^5.1.4"
   }
 }

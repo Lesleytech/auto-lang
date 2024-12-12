@@ -3,6 +3,9 @@
 Generate translation files for multiple languages.
 
 Write once for a single language and automatically get translated json files for others.
+
+**NEW**: Show the difference between two translation files.
+
 ## Installation
 ### Using npm
     $ npm install auto-lang
@@ -36,13 +39,16 @@ Or, using yarn:
 
 #### Options
 
-    -V, --version          output the version number
-    -f, --from <lang>      language to translate from
-    -t, --to <lang...>     languages to translate to (seperated by space)
-    -d, --dir <directory>  directory containing the language files (default: "translations")
-    -s, --skip-existing    skip existing keys during translation
-    -g, --gen-type <lang>  generate types from language file
-    -h, --help             display help for command
+```
+  -V, --version          output the version number
+  -f, --from <lang>      language to translate from
+  -t, --to <lang...>     languages to translate to (seperated by space)
+  -d, --dir <directory>  directory containing the language files (default: "translations")
+  -s, --skip-existing    skip existing keys during translation
+  -g, --gen-type <lang>  generate types from language file
+  -d, --diff <lang...>   show missing keys between two language files
+  -h, --help             display help for command
+```
 
 **Note:** `<lang>` must be a valid [ISO 639-1 language code](https://localizely.com/iso-639-1-list/).
 
