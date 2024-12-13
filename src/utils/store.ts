@@ -1,4 +1,4 @@
-import { IInputParams } from '../interfaces/input-params.interface.js';
+import { IInputParams } from '../interfaces/input-params.interface';
 
 class Store {
   private inputParams: IInputParams = {

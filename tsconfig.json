@@ -1,15 +1,17 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "NodeNext",
+    "target": "ESNext",
+    "module": "ESNext",
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true
-//    "moduleResolution": "bundler"
-
+    "skipLibCheck": true,
+    "allowJs": true,
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "noEmit": true
   },
   "exclude": ["node_modules"],
   "include": ["src/**/*"]

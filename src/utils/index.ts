@@ -8,8 +8,8 @@ import { Logger } from './logger.js';
 
 // @ts-expect-error
 import translate from 'translate';
-import { TranslationObject } from '../interfaces/input-params.interface.js';
-import { store } from './store.js';
+import { TranslationObject } from '../interfaces/input-params.interface';
+import { store } from './store';
 
 async function makeTranslatedCopy(
   source: TranslationObject,
@@ -67,7 +67,6 @@ export async function createDeclarationFile() {
     path.join(process.cwd(), dir, `${genType}.json`),
   );
 
-  // @ts-expect-error
   const interfaces = JsonToTS(langObject, {
     rootName: 'GlobalTranslationType',
   });

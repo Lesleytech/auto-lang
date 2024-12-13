@@ -1,8 +1,8 @@
 import { existsSync } from 'fs';
 import path from 'path';
 
-import { IInputParams } from '../interfaces/input-params.interface.js';
-import { Logger } from './logger.js';
+import { IInputParams } from '../interfaces/input-params.interface';
+import { Logger } from './logger';
 
 export function validateUserInput(params: IInputParams) {
   if (!Object.keys(params).length) {

@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { Command } from 'commander';
 import path from 'path';
 
@@ -6,9 +8,9 @@ import {
   parseJsonFile,
   showLangDiff,
   translateFile,
-} from './utils/index.js';
-import { validateUserInput } from './utils/validation.js';
-import { store } from './utils/store.js';
+} from './utils';
+import { validateUserInput } from './utils/validation';
+import { store } from './utils/store';
 
 async function main() {
   const pjson = await parseJsonFile(path.join(process.cwd(), 'package.json'));
