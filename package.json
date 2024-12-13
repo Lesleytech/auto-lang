@@ -19,11 +19,11 @@
   "homepage": "https://github.com/lesleytech/auto-lang#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lesleytech/auto-lang.git"
+    "url": "git+https://github.com/lesleytech/auto-lang.git"
   },
   "license": "ISC",
   "bin": {
-    "auto-lang": "./dist/index.js"
+    "auto-lang": "dist/index.js"
   },
   "dependencies": {
     "chalk": "^5.0.1",
